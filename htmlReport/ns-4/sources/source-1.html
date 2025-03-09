@@ -1,0 +1,218 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > DefaultAccountService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">sg.com.gic.bankaccountinterest.service.serviceimpl</a>
+</div>
+
+<h1>Coverage Summary for Class: DefaultAccountService (sg.com.gic.bankaccountinterest.service.serviceimpl)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">DefaultAccountService</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/41)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package sg.com.gic.bankaccountinterest.service.serviceimpl;
+&nbsp;import sg.com.gic.bankaccountinterest.model.Account;
+&nbsp;import sg.com.gic.bankaccountinterest.model.Transaction;
+&nbsp;import sg.com.gic.bankaccountinterest.model.TransactionType;
+&nbsp;import sg.com.gic.bankaccountinterest.repository.AccountRepository;
+&nbsp;import sg.com.gic.bankaccountinterest.service.AccountService;
+&nbsp;import sg.com.gic.bankaccountinterest.service.InterestCalculator;
+&nbsp;import sg.com.gic.bankaccountinterest.validator.DateValidator;
+&nbsp;
+&nbsp;import java.math.BigDecimal;
+&nbsp;import java.time.LocalDate;
+&nbsp;import java.time.YearMonth;
+&nbsp;import java.time.format.DateTimeFormatter;
+&nbsp;import java.util.Comparator;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;public class DefaultAccountService implements AccountService {
+&nbsp;    private final AccountRepository accountRepository;
+&nbsp;    private final InterestCalculator interestCalculator;
+&nbsp;    private final DateValidator dateValidator;
+<b class="nc">&nbsp;    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern(&quot;yyyyMMdd&quot;);</b>
+&nbsp;
+&nbsp;    public DefaultAccountService(AccountRepository accountRepository,
+&nbsp;                                 InterestCalculator interestCalculator,
+<b class="nc">&nbsp;                                 DateValidator dateValidator) {</b>
+<b class="nc">&nbsp;        this.accountRepository = accountRepository;</b>
+<b class="nc">&nbsp;        this.interestCalculator = interestCalculator;</b>
+<b class="nc">&nbsp;        this.dateValidator = dateValidator;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void printStatement(String accountId, String yearMonth) {
+&nbsp;        // Validate yearMonth format
+<b class="nc">&nbsp;        if (!yearMonth.matches(&quot;^\\d{6}$&quot;)) {</b>
+<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid date format. Date should be in YYYYMM format.&quot;);</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        String year = yearMonth.substring(0, 4);</b>
+<b class="nc">&nbsp;        String month = yearMonth.substring(4, 6);</b>
+<b class="nc">&nbsp;        String fullDate = year + month + &quot;01&quot;;</b>
+&nbsp;
+<b class="nc">&nbsp;        dateValidator.validateDate(fullDate);</b>
+&nbsp;
+<b class="nc">&nbsp;        int yearInt = Integer.parseInt(year);</b>
+<b class="nc">&nbsp;        int monthInt = Integer.parseInt(month);</b>
+<b class="nc">&nbsp;        YearMonth yearMonthObj = YearMonth.of(yearInt, monthInt);</b>
+&nbsp;
+<b class="nc">&nbsp;        LocalDate startDate = yearMonthObj.atDay(1);</b>
+<b class="nc">&nbsp;        LocalDate endDate = yearMonthObj.atEndOfMonth();</b>
+&nbsp;
+<b class="nc">&nbsp;        String startDateStr = startDate.format(DATE_FORMAT);</b>
+<b class="nc">&nbsp;        String endDateStr = endDate.format(DATE_FORMAT);</b>
+&nbsp;
+<b class="nc">&nbsp;        Optional&lt;Account&gt; accountOptional = accountRepository.findByAccountId(accountId);</b>
+<b class="nc">&nbsp;        if (!accountOptional.isPresent()) {</b>
+<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Account does not exist. Unable to generate print statement.&quot;);</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        List&lt;Transaction&gt; transactions = accountRepository.getTransactionsInPeriod(accountId, startDateStr, endDateStr);</b>
+<b class="nc">&nbsp;        if (transactions.isEmpty()) {</b>
+<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;No transactions found for the given date. Unable to generate print statement.&quot;);</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        transactions.sort(Comparator.comparing(Transaction::getDate));</b>
+&nbsp;
+<b class="nc">&nbsp;        BigDecimal openingBalance = accountRepository.calculateBalanceBeforeDate(accountId, startDateStr);</b>
+<b class="nc">&nbsp;        BigDecimal runningBalance = openingBalance;</b>
+&nbsp;
+<b class="nc">&nbsp;        System.out.println(&quot;Account: &quot; + accountId);</b>
+<b class="nc">&nbsp;        System.out.println(&quot;| Date     | Txn Id      | Type | Amount   | Balance  |&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;        for (Transaction t : transactions) {</b>
+<b class="nc">&nbsp;            if (t.getType() == TransactionType.DEPOSIT || t.getType() == TransactionType.INTEREST) {</b>
+<b class="nc">&nbsp;                runningBalance = runningBalance.add(t.getAmount());</b>
+<b class="nc">&nbsp;            } else if (t.getType() == TransactionType.WITHDRAWAL) {</b>
+<b class="nc">&nbsp;                runningBalance = runningBalance.subtract(t.getAmount());</b>
+&nbsp;            }
+&nbsp;
+<b class="nc">&nbsp;            System.out.printf(&quot;| %-8s | %-11s | %-4s | %8.2f | %8.2f |%n&quot;,</b>
+<b class="nc">&nbsp;                    t.getDate(), t.getId(), t.getType(), t.getAmount(), runningBalance);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        // Calculate and print interest
+<b class="nc">&nbsp;        BigDecimal interest = interestCalculator.calculateMonthlyInterest(accountId, startDate, endDate);</b>
+<b class="nc">&nbsp;        runningBalance = runningBalance.add(interest);</b>
+&nbsp;
+&nbsp;        // Add interest as a transaction
+<b class="nc">&nbsp;        Transaction interestTransaction = new Transaction(</b>
+&nbsp;                endDateStr,
+&nbsp;                &quot;&quot;,
+&nbsp;                TransactionType.INTEREST,
+&nbsp;                interest);
+&nbsp;
+<b class="nc">&nbsp;        System.out.printf(&quot;| %-8s | %-11s | %-4s | %8.2f | %8.2f |%n&quot;,</b>
+&nbsp;                endDateStr, &quot;&quot;, TransactionType.INTEREST, interest, runningBalance);
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public boolean accountExists(String accountId) {
+<b class="nc">&nbsp;        return accountRepository.findByAccountId(accountId).isPresent();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-03-08 18:49</div>
+</div>
+</body>
+</html>

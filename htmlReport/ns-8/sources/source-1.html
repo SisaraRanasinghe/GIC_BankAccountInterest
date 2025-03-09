@@ -1,0 +1,90 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > AccountRepository</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">sg.com.gic.bankaccountinterest.repository</a>
+</div>
+
+<h1>Coverage Summary for Class: AccountRepository (sg.com.gic.bankaccountinterest.repository)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">AccountRepository</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package sg.com.gic.bankaccountinterest.repository;
+&nbsp;
+&nbsp;import sg.com.gic.bankaccountinterest.model.Account;
+&nbsp;import sg.com.gic.bankaccountinterest.model.Transaction;
+&nbsp;
+&nbsp;import java.math.BigDecimal;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;public interface AccountRepository {
+&nbsp;    Optional&lt;Account&gt; findByAccountId(String accountId);
+&nbsp;
+&nbsp;    void saveAccount(Account account);
+&nbsp;
+&nbsp;    void addTransaction(String accountId, Transaction transaction);
+&nbsp;
+&nbsp;    BigDecimal calculateBalanceAtDate(String accountId, String date);
+&nbsp;
+&nbsp;    BigDecimal calculateBalanceBeforeDate(String accountId, String date);
+&nbsp;
+&nbsp;    List&lt;Transaction&gt; getTransactionsInPeriod(String accountId, String startDate, String endDate);
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-03-08 18:49</div>
+</div>
+</body>
+</html>

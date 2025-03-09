@@ -1,0 +1,204 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > DefaultTransactionService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">sg.com.gic.bankaccountinterest.service.serviceimpl</a>
+</div>
+
+<h1>Coverage Summary for Class: DefaultTransactionService (sg.com.gic.bankaccountinterest.service.serviceimpl)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">DefaultTransactionService</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/33)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package sg.com.gic.bankaccountinterest.service.serviceimpl;
+&nbsp;import sg.com.gic.bankaccountinterest.model.Transaction;
+&nbsp;import sg.com.gic.bankaccountinterest.model.TransactionType;
+&nbsp;import sg.com.gic.bankaccountinterest.repository.AccountRepository;
+&nbsp;import sg.com.gic.bankaccountinterest.service.TransactionService;
+&nbsp;import sg.com.gic.bankaccountinterest.validator.DateValidator;
+&nbsp;
+&nbsp;import java.math.BigDecimal;
+&nbsp;import java.util.Comparator;
+&nbsp;import java.util.List;
+&nbsp;public class DefaultTransactionService implements TransactionService {
+&nbsp;    private final AccountRepository accountRepository;
+&nbsp;    private final DateValidator dateValidator;
+&nbsp;
+<b class="nc">&nbsp;    public DefaultTransactionService(AccountRepository accountRepository, DateValidator dateValidator) {</b>
+<b class="nc">&nbsp;        this.accountRepository = accountRepository;</b>
+<b class="nc">&nbsp;        this.dateValidator = dateValidator;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void processTransaction(String date, String accountId, String typeStr, String amountStr) {
+<b class="nc">&nbsp;        if (date == null || !date.matches(&quot;^\\d{8}$&quot;)) {</b>
+<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid date format. Date should be in YYYYMMdd format (8 digits only).&quot;);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        dateValidator.validateDate(date);</b>
+&nbsp;
+<b class="nc">&nbsp;        if (!accountId.matches(&quot;^[\\w\\W]{1,10}$&quot;)) {</b>
+<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid account name. It should be up to 10 characters.&quot;);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        TransactionType type;
+&nbsp;        try {
+<b class="nc">&nbsp;            type = TransactionType.fromCode(typeStr);</b>
+&nbsp;        } catch (IllegalArgumentException e) {
+<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Transaction type must be D (deposit) or W (withdrawal)&quot;);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        BigDecimal amount;
+&nbsp;        try {
+<b class="nc">&nbsp;            amount = new BigDecimal(amountStr);</b>
+&nbsp;        } catch (NumberFormatException e) {
+<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid Amount. Please enter a valid numeric value.&quot;);</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        if (amount.compareTo(BigDecimal.ZERO) &lt;= 0) {</b>
+<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Amount must be greater than zero&quot;);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        // Check balance for withdrawals
+<b class="nc">&nbsp;        BigDecimal balance = accountRepository.calculateBalanceAtDate(accountId, date);</b>
+<b class="nc">&nbsp;        if (type == TransactionType.WITHDRAWAL &amp;&amp; balance.compareTo(amount) &lt; 0) {</b>
+<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Insufficient balance for withdrawal&quot;);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        // Generate transaction ID and create transaction
+<b class="nc">&nbsp;        String transactionId = generateTransactionId(date, accountId);</b>
+<b class="nc">&nbsp;        Transaction transaction = new Transaction(date, transactionId, type, amount);</b>
+&nbsp;
+&nbsp;        // Add transaction to account
+<b class="nc">&nbsp;        accountRepository.addTransaction(accountId, transaction);</b>
+&nbsp;
+&nbsp;        // Display account statement
+<b class="nc">&nbsp;        System.out.println(&quot;Account: &quot; + accountId);</b>
+<b class="nc">&nbsp;        System.out.println(&quot;| Date     | Txn Id      | Type | Amount   |&quot;);</b>
+&nbsp;
+&nbsp;        // Get all transactions for this account and display
+<b class="nc">&nbsp;        accountRepository.findByAccountId(accountId).ifPresent(account -&gt; {</b>
+<b class="nc">&nbsp;            account.getTransactions().stream()</b>
+<b class="nc">&nbsp;                    .sorted(Comparator.comparing(Transaction::getDate))</b>
+<b class="nc">&nbsp;                    .forEach(txn -&gt; System.out.println(txn));</b>
+&nbsp;        });
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public String generateTransactionId(String date, String accountId) {
+&nbsp;        // Get all transactions for this account and date
+<b class="nc">&nbsp;        List&lt;Transaction&gt; transactions = accountRepository.findByAccountId(accountId)</b>
+<b class="nc">&nbsp;                .map(account -&gt; account.getTransactions())</b>
+<b class="nc">&nbsp;                .orElse(List.of());</b>
+&nbsp;
+&nbsp;        // Count transactions with the same date
+<b class="nc">&nbsp;        long count = transactions.stream()</b>
+<b class="nc">&nbsp;                .filter(t -&gt; t.getDate().equals(date))</b>
+<b class="nc">&nbsp;                .count() + 1;</b>
+&nbsp;
+<b class="nc">&nbsp;        return date + &quot;-&quot; + String.format(&quot;%02d&quot;, count);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-03-08 18:36</div>
+</div>
+</body>
+</html>
