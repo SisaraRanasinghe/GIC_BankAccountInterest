@@ -5,7 +5,7 @@
 <html id="htmlId">
 <head>
   <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
-  <title>Coverage Report > DefaultInterestCalculator</title>
+  <title>Coverage Report > InterestCalculatorImpl</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/idea.min.css";
@@ -22,7 +22,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     <a href="../index.html">sg.com.gic.bankaccountinterest.service.serviceimpl</a>
 </div>
 
-<h1>Coverage Summary for Class: DefaultInterestCalculator (sg.com.gic.bankaccountinterest.service.serviceimpl)</h1>
+<h1>Coverage Summary for Class: InterestCalculatorImpl (sg.com.gic.bankaccountinterest.service.serviceimpl)</h1>
 
 <table class="coverageStats">
 <tr>
@@ -45,37 +45,37 @@ Current scope:     <a href="../../index.html">all classes</a>
 </th>
 </tr>
 <tr>
-  <td class="name">DefaultInterestCalculator</td>
+  <td class="name">InterestCalculatorImpl</td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/1)
+    (1/1)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/3)
+    (3/3)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    85%
   </span>
   <span class="absValue">
-    (0/20)
+    (17/20)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    97.8%
   </span>
   <span class="absValue">
-    (0/47)
+    (45/46)
   </span>
 </td>
 </tr>
@@ -89,11 +89,11 @@ Current scope:     <a href="../../index.html">all classes</a>
 <pre>
 <code class="sourceCode" id="sourceCode">&nbsp;package sg.com.gic.bankaccountinterest.service.serviceimpl;
 &nbsp;
-&nbsp;import sg.com.gic.bankaccountinterest.model.InterestRuleTest;
+&nbsp;import sg.com.gic.bankaccountinterest.model.InterestRule;
+&nbsp;import sg.com.gic.bankaccountinterest.model.Transaction;
 &nbsp;import sg.com.gic.bankaccountinterest.repository.AccountRepository;
 &nbsp;import sg.com.gic.bankaccountinterest.repository.InterestRuleRepository;
 &nbsp;import sg.com.gic.bankaccountinterest.service.InterestCalculator;
-&nbsp;
 &nbsp;import java.math.BigDecimal;
 &nbsp;import java.math.RoundingMode;
 &nbsp;import java.time.LocalDate;
@@ -102,142 +102,114 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;import java.util.*;
 &nbsp;import java.util.stream.Collectors;
 &nbsp;
-&nbsp;public class DefaultInterestCalculator implements InterestCalculator {
+&nbsp;public class InterestCalculatorImpl implements InterestCalculator {
 &nbsp;    private final InterestRuleRepository interestRuleRepository;
 &nbsp;    private final AccountRepository accountRepository;
 &nbsp;    private static final int DAYS_IN_YEAR = 365;
-<b class="nc">&nbsp;    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern(&quot;yyyyMMdd&quot;);</b>
+<b class="fc">&nbsp;    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern(&quot;yyyyMMdd&quot;);</b>
 &nbsp;
-<b class="nc">&nbsp;    public DefaultInterestCalculator(InterestRuleRepository interestRuleRepository, AccountRepository accountRepository) {</b>
-<b class="nc">&nbsp;        this.interestRuleRepository = interestRuleRepository;</b>
-<b class="nc">&nbsp;        this.accountRepository = accountRepository;</b>
+<b class="fc">&nbsp;    public InterestCalculatorImpl(InterestRuleRepository interestRuleRepository, AccountRepository accountRepository) {</b>
+<b class="fc">&nbsp;        this.interestRuleRepository = interestRuleRepository;</b>
+<b class="fc">&nbsp;        this.accountRepository = accountRepository;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    @Override
 &nbsp;    public BigDecimal calculateMonthlyInterest(String accountId, LocalDate startDate, LocalDate endDate) {
 &nbsp;        // Check if we have interest rules defined
-<b class="nc">&nbsp;        List&lt;InterestRule&gt; rules = interestRuleRepository.getAllRules();</b>
-<b class="nc">&nbsp;        if (rules.isEmpty()) {</b>
+<b class="fc">&nbsp;        List&lt;InterestRule&gt; rules = interestRuleRepository.getAllRules();</b>
+<b class="pc">&nbsp;        if (rules.isEmpty()) {</b>
 <b class="nc">&nbsp;            return BigDecimal.ZERO;</b>
 &nbsp;        }
 &nbsp;
 &nbsp;        // Create a sorted list of all dates where the balance changes
-<b class="nc">&nbsp;        Set&lt;LocalDate&gt; balanceChangeDates = new TreeSet&lt;&gt;();</b>
+<b class="fc">&nbsp;        Set&lt;LocalDate&gt; balanceChangeDates = new TreeSet&lt;&gt;();</b>
 &nbsp;
 &nbsp;        // Add start date of the month
-<b class="nc">&nbsp;        balanceChangeDates.add(startDate);</b>
+<b class="fc">&nbsp;        balanceChangeDates.add(startDate);</b>
 &nbsp;
 &nbsp;        // Add transaction dates that change balance
-<b class="nc">&nbsp;        List&lt;String&gt; transactionDates = accountRepository.getTransactionsInPeriod(accountId,</b>
-<b class="nc">&nbsp;                        startDate.format(DATE_FORMAT),</b>
-<b class="nc">&nbsp;                        endDate.format(DATE_FORMAT))</b>
-<b class="nc">&nbsp;                .stream()</b>
-<b class="nc">&nbsp;                .map(t -&gt; t.getDate())</b>
-<b class="nc">&nbsp;                .distinct()</b>
-<b class="nc">&nbsp;                .collect(Collectors.toList());</b>
+<b class="fc">&nbsp;        List&lt;String&gt; transactionDates = accountRepository.getTransactionsInPeriod(accountId,</b>
+<b class="fc">&nbsp;                        startDate.format(DATE_FORMAT),</b>
+<b class="fc">&nbsp;                        endDate.format(DATE_FORMAT))</b>
+<b class="fc">&nbsp;                .stream()</b>
+<b class="fc">&nbsp;                .map(Transaction::getDate)</b>
+<b class="fc">&nbsp;                .distinct()</b>
+<b class="fc">&nbsp;                .collect(Collectors.toList());</b>
 &nbsp;
-<b class="nc">&nbsp;        for (String txnDate : transactionDates) {</b>
-<b class="nc">&nbsp;            balanceChangeDates.add(LocalDate.parse(txnDate, DATE_FORMAT));</b>
+<b class="fc">&nbsp;        for (String txnDate : transactionDates) {</b>
+<b class="fc">&nbsp;            balanceChangeDates.add(LocalDate.parse(txnDate, DATE_FORMAT));</b>
 &nbsp;        }
 &nbsp;
 &nbsp;        // Add interest rule effective dates that fall in this month
-<b class="nc">&nbsp;        for (InterestRule rule : rules) {</b>
-<b class="nc">&nbsp;            LocalDate ruleDate = LocalDate.parse(rule.getDate(), DATE_FORMAT);</b>
-<b class="nc">&nbsp;            if (!ruleDate.isBefore(startDate) &amp;&amp; !ruleDate.isAfter(endDate)) {</b>
-<b class="nc">&nbsp;                balanceChangeDates.add(ruleDate);</b>
+<b class="fc">&nbsp;        for (InterestRule rule : rules) {</b>
+<b class="fc">&nbsp;            LocalDate ruleDate = LocalDate.parse(rule.getDate(), DATE_FORMAT);</b>
+<b class="fc">&nbsp;            if (!ruleDate.isBefore(startDate) &amp;&amp; !ruleDate.isAfter(endDate)) {</b>
+<b class="fc">&nbsp;                balanceChangeDates.add(ruleDate);</b>
 &nbsp;            }
 &nbsp;        }
 &nbsp;
 &nbsp;        // Convert to sorted list
-<b class="nc">&nbsp;        List&lt;LocalDate&gt; datePoints = new ArrayList&lt;&gt;(balanceChangeDates);</b>
-<b class="nc">&nbsp;        Collections.sort(datePoints);</b>
+<b class="fc">&nbsp;        List&lt;LocalDate&gt; datePoints = new ArrayList&lt;&gt;(balanceChangeDates);</b>
+<b class="fc">&nbsp;        Collections.sort(datePoints);</b>
 &nbsp;
 &nbsp;        // Add end date if not already in the list
-<b class="nc">&nbsp;        if (!datePoints.contains(endDate)) {</b>
-<b class="nc">&nbsp;            datePoints.add(endDate);</b>
+<b class="pc">&nbsp;        if (!datePoints.contains(endDate)) {</b>
+<b class="fc">&nbsp;            datePoints.add(endDate);</b>
 &nbsp;        }
 &nbsp;
-<b class="nc">&nbsp;        BigDecimal annualizedInterestSum = BigDecimal.ZERO;</b>
-&nbsp;
-&nbsp;        // For debugging/display purposes
-&nbsp;   // THIS     System.out.println(&quot;| Period              | Num of days | EOD Balance | Rate Id | Rate | Annualized Interest |&quot;);
+<b class="fc">&nbsp;        BigDecimal annualizedInterestSum = BigDecimal.ZERO;</b>
 &nbsp;
 &nbsp;        // Calculate interest for each period
-<b class="nc">&nbsp;        for (int i = 0; i &lt; datePoints.size() - 1; i++) {</b>
-<b class="nc">&nbsp;            LocalDate periodStart = datePoints.get(i);</b>
+<b class="fc">&nbsp;        for (int i = 0; i &lt; datePoints.size() - 1; i++) {</b>
+<b class="fc">&nbsp;            LocalDate periodStart = datePoints.get(i);</b>
 &nbsp;
 &nbsp;            // IMPORTANT CHANGE: Don&#39;t subtract a day from the next date point
 &nbsp;            // Instead, use the date before the next date point as the period end
 &nbsp;            LocalDate periodEnd;
-<b class="nc">&nbsp;            if (i &lt; datePoints.size() - 2) {</b>
+<b class="fc">&nbsp;            if (i &lt; datePoints.size() - 2) {</b>
 &nbsp;                // For all periods except the last one, end just before the next change
-<b class="nc">&nbsp;                periodEnd = datePoints.get(i + 1).minusDays(1);</b>
+<b class="fc">&nbsp;                periodEnd = datePoints.get(i + 1).minusDays(1);</b>
 &nbsp;            } else {
 &nbsp;                // For the last period, use the endDate directly
-<b class="nc">&nbsp;                periodEnd = endDate;</b>
+<b class="fc">&nbsp;                periodEnd = endDate;</b>
 &nbsp;            }
 &nbsp;
 &nbsp;            // Skip if period is invalid
-<b class="nc">&nbsp;            if (periodEnd.isBefore(periodStart)) {</b>
+<b class="pc">&nbsp;            if (periodEnd.isBefore(periodStart)) {</b>
 &nbsp;                continue;
 &nbsp;            }
 &nbsp;
 &nbsp;            // Get balance at start of period (which is the EOD balance for the entire period)
-<b class="nc">&nbsp;            BigDecimal periodBalance = accountRepository.calculateBalanceAtDate(</b>
-<b class="nc">&nbsp;                    accountId, periodStart.format(DATE_FORMAT));</b>
+<b class="fc">&nbsp;            BigDecimal periodBalance = accountRepository.calculateBalanceAtDate(</b>
+<b class="fc">&nbsp;                    accountId, periodStart.format(DATE_FORMAT));</b>
 &nbsp;
 &nbsp;            // Get applicable interest rule
-<b class="nc">&nbsp;            Optional&lt;InterestRule&gt; applicableRuleOpt = interestRuleRepository.getApplicableRuleForDate(periodStart);</b>
-<b class="nc">&nbsp;            if (!applicableRuleOpt.isPresent()) {</b>
+<b class="fc">&nbsp;            Optional&lt;InterestRule&gt; applicableRuleOpt = interestRuleRepository.getApplicableRuleForDate(periodStart);</b>
+<b class="fc">&nbsp;            if (!applicableRuleOpt.isPresent()) {</b>
 &nbsp;                continue; // Skip if no rule is applicable
 &nbsp;            }
 &nbsp;
-<b class="nc">&nbsp;            InterestRule applicableRule = applicableRuleOpt.get();</b>
+<b class="fc">&nbsp;            InterestRule applicableRule = applicableRuleOpt.get();</b>
 &nbsp;
 &nbsp;            // Calculate number of days in this period
-<b class="nc">&nbsp;            long daysInPeriod = ChronoUnit.DAYS.between(periodStart, periodEnd) + 1; // +1 because end date is inclusive</b>
+<b class="fc">&nbsp;            long daysInPeriod = ChronoUnit.DAYS.between(periodStart, periodEnd) + 1; // +1 because end date is inclusive</b>
 &nbsp;
 &nbsp;            // Calculate annualized interest for this period (Balance * Rate% * Days)
-<b class="nc">&nbsp;            BigDecimal periodAnnualizedInterest = periodBalance</b>
-<b class="nc">&nbsp;                    .multiply(applicableRule.getRate())</b>
-<b class="nc">&nbsp;                    .multiply(BigDecimal.valueOf(daysInPeriod));</b>
+<b class="fc">&nbsp;            BigDecimal periodAnnualizedInterest = periodBalance</b>
+<b class="fc">&nbsp;                    .multiply(applicableRule.getRate())</b>
+<b class="fc">&nbsp;                    .multiply(BigDecimal.valueOf(daysInPeriod));</b>
 &nbsp;
-&nbsp;            // Print the period details for debugging/verification
-&nbsp;//    THESE        System.out.println(String.format(&quot;| %s - %s | %d | %s | %s | %.2f | %s * %.2f%% * %d = %.2f |&quot;,
-&nbsp;//                    periodStart.format(DATE_FORMAT),
-&nbsp;//                    periodEnd.format(DATE_FORMAT),
-&nbsp;//                    daysInPeriod,
-&nbsp;//                    periodBalance,
-&nbsp;//                    applicableRule.getRuleId(),
-&nbsp;//                    applicableRule.getRate(),
-&nbsp;//                    periodBalance,
-&nbsp;//                    applicableRule.getRate(),
-&nbsp;//                    daysInPeriod,
-&nbsp;//                    periodAnnualizedInterest.doubleValue() / 100)); // Divide by 100 for display only
-&nbsp;
-<b class="nc">&nbsp;            annualizedInterestSum = annualizedInterestSum.add(periodAnnualizedInterest);</b>
+<b class="fc">&nbsp;            annualizedInterestSum = annualizedInterestSum.add(periodAnnualizedInterest);</b>
 &nbsp;        }
-&nbsp;
-&nbsp;        // Print the sum
-&nbsp;    // THIS    System.out.println(&quot;Total annualized interest sum: &quot; + annualizedInterestSum.divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP));
 &nbsp;
 &nbsp;        // Calculate actual interest by dividing the sum by (365 * 100)
 &nbsp;        // The division by 100 is to convert percentage to decimal
-<b class="nc">&nbsp;        BigDecimal actualInterest = annualizedInterestSum</b>
-<b class="nc">&nbsp;                .divide(BigDecimal.valueOf(DAYS_IN_YEAR * 100), 10, RoundingMode.HALF_UP);</b>
-&nbsp;
-&nbsp;        // Print the unrounded actual interest value
-&nbsp;    // THIS    System.out.println(&quot;Therefore total interest is: (&quot; +
-&nbsp;        // THIS               annualizedInterestSum.divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP) +
-&nbsp;        // THIS              &quot;) / 365 = &quot; + actualInterest.setScale(4, RoundingMode.HALF_UP));
+<b class="fc">&nbsp;        BigDecimal actualInterest = annualizedInterestSum</b>
+<b class="fc">&nbsp;                .divide(BigDecimal.valueOf(DAYS_IN_YEAR * 100), 10, RoundingMode.HALF_UP);</b>
 &nbsp;
 &nbsp;        // Round to 2 decimal places using HALF_UP rounding mode
-<b class="nc">&nbsp;        BigDecimal roundedInterest = actualInterest.setScale(2, RoundingMode.HALF_UP);</b>
-&nbsp;
 &nbsp;        // Print the final rounded interest value
-&nbsp;        // THIS  System.out.println(&quot;Final interest (rounded): &quot; + roundedInterest);
-&nbsp;
-<b class="nc">&nbsp;        return roundedInterest;</b>
+<b class="fc">&nbsp;        return actualInterest.setScale(2, RoundingMode.HALF_UP);</b>
 &nbsp;    }
 &nbsp;}
 </code>
@@ -263,7 +235,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2025-03-08 18:49</div>
+    <div style="float:right;">generated on 2025-03-09 22:28</div>
 </div>
 </body>
 </html>

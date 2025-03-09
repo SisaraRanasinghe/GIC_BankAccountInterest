@@ -5,7 +5,7 @@
 <html id="htmlId">
 <head>
   <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
-  <title>Coverage Report > DefaultBankService</title>
+  <title>Coverage Report > BankServiceImpl</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/idea.min.css";
@@ -22,7 +22,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     <a href="../index.html">sg.com.gic.bankaccountinterest.service.serviceimpl</a>
 </div>
 
-<h1>Coverage Summary for Class: DefaultBankService (sg.com.gic.bankaccountinterest.service.serviceimpl)</h1>
+<h1>Coverage Summary for Class: BankServiceImpl (sg.com.gic.bankaccountinterest.service.serviceimpl)</h1>
 
 <table class="coverageStats">
 <tr>
@@ -45,37 +45,37 @@ Current scope:     <a href="../../index.html">all classes</a>
 </th>
 </tr>
 <tr>
-  <td class="name">DefaultBankService</td>
+  <td class="name">BankServiceImpl</td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/1)
+    (1/1)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/4)
+    (4/4)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    83.3%
   </span>
   <span class="absValue">
-    (0/18)
+    (15/18)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    93%
   </span>
   <span class="absValue">
-    (0/43)
+    (40/43)
   </span>
 </td>
 </tr>
@@ -88,7 +88,8 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <pre>
 <code class="sourceCode" id="sourceCode">&nbsp;package sg.com.gic.bankaccountinterest.service.serviceimpl;
-&nbsp;import sg.com.gic.bankaccountinterest.model.InterestRuleTest;
+&nbsp;
+&nbsp;import sg.com.gic.bankaccountinterest.model.InterestRule;
 &nbsp;import sg.com.gic.bankaccountinterest.repository.InterestRuleRepository;
 &nbsp;import sg.com.gic.bankaccountinterest.service.AccountService;
 &nbsp;import sg.com.gic.bankaccountinterest.service.BankService;
@@ -98,98 +99,99 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;import java.math.BigDecimal;
 &nbsp;import java.util.Comparator;
 &nbsp;import java.util.List;
-&nbsp;public class DefaultBankService implements BankService {
+&nbsp;
+&nbsp;public class BankServiceImpl implements BankService {
 &nbsp;    private final AccountService accountService;
 &nbsp;    private final TransactionService transactionService;
 &nbsp;    private final InterestRuleRepository interestRuleRepository;
 &nbsp;    private final DateValidator dateValidator;
 &nbsp;
-&nbsp;    public DefaultBankService(AccountService accountService,
-&nbsp;                              TransactionService transactionService,
-&nbsp;                              InterestRuleRepository interestRuleRepository,
-<b class="nc">&nbsp;                              DateValidator dateValidator) {</b>
-<b class="nc">&nbsp;        this.accountService = accountService;</b>
-<b class="nc">&nbsp;        this.transactionService = transactionService;</b>
-<b class="nc">&nbsp;        this.interestRuleRepository = interestRuleRepository;</b>
-<b class="nc">&nbsp;        this.dateValidator = dateValidator;</b>
+&nbsp;    public BankServiceImpl(AccountService accountService,
+&nbsp;                           TransactionService transactionService,
+&nbsp;                           InterestRuleRepository interestRuleRepository,
+<b class="fc">&nbsp;                           DateValidator dateValidator) {</b>
+<b class="fc">&nbsp;        this.accountService = accountService;</b>
+<b class="fc">&nbsp;        this.transactionService = transactionService;</b>
+<b class="fc">&nbsp;        this.interestRuleRepository = interestRuleRepository;</b>
+<b class="fc">&nbsp;        this.dateValidator = dateValidator;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    @Override
 &nbsp;    public void processTransaction(String input) {
-<b class="nc">&nbsp;        String[] parts = input.split(&quot; &quot;);</b>
-<b class="nc">&nbsp;        if (parts.length != 4) {</b>
-<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid transaction format. Use &lt;Date&gt; &lt;Account&gt; &lt;Type&gt; &lt;Amount&gt;&quot;);</b>
+<b class="fc">&nbsp;        String[] parts = input.split(&quot; &quot;);</b>
+<b class="fc">&nbsp;        if (parts.length != 4) {</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid transaction format. Use &lt;Date&gt; &lt;Account&gt; &lt;Type&gt; &lt;Amount&gt;&quot;);</b>
 &nbsp;        }
 &nbsp;
-<b class="nc">&nbsp;        String date = parts[0];</b>
-<b class="nc">&nbsp;        String accountId = parts[1];</b>
-<b class="nc">&nbsp;        String type = parts[2];</b>
-<b class="nc">&nbsp;        String amount = parts[3];</b>
+<b class="fc">&nbsp;        String date = parts[0];</b>
+<b class="fc">&nbsp;        String accountId = parts[1];</b>
+<b class="fc">&nbsp;        String type = parts[2];</b>
+<b class="fc">&nbsp;        String amount = parts[3];</b>
 &nbsp;
-<b class="nc">&nbsp;        transactionService.processTransaction(date, accountId, type, amount);</b>
+<b class="fc">&nbsp;        transactionService.processTransaction(date, accountId, type, amount);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    @Override
 &nbsp;    public void addInterestRule(String input) {
-<b class="nc">&nbsp;        String[] parts = input.split(&quot; &quot;);</b>
-<b class="nc">&nbsp;        if (parts.length != 3) {</b>
-<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid interest rule format. Use &lt;Date&gt; &lt;RuleId&gt; &lt;Rate&gt;&quot;);</b>
+<b class="fc">&nbsp;        String[] parts = input.split(&quot; &quot;);</b>
+<b class="fc">&nbsp;        if (parts.length != 3) {</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid interest rule format. Use &lt;Date&gt; &lt;RuleId&gt; &lt;Rate&gt;&quot;);</b>
 &nbsp;        }
 &nbsp;
-<b class="nc">&nbsp;        String date = parts[0];</b>
-<b class="nc">&nbsp;        String ruleId = parts[1];</b>
-<b class="nc">&nbsp;        String rateStr = parts[2];</b>
+<b class="fc">&nbsp;        String date = parts[0];</b>
+<b class="fc">&nbsp;        String ruleId = parts[1];</b>
+<b class="fc">&nbsp;        String rateStr = parts[2];</b>
 &nbsp;
-<b class="nc">&nbsp;        if (date == null || !date.matches(&quot;^\\d{8}$&quot;)) {</b>
-<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid date format. Date should be in YYYYMMdd format (8 digits only).&quot;);</b>
+<b class="pc">&nbsp;        if (date == null || !date.matches(&quot;^\\d{8}$&quot;)) {</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid date format. Date should be in YYYYMMdd format (8 digits only).&quot;);</b>
 &nbsp;        }
 &nbsp;
-<b class="nc">&nbsp;        dateValidator.validateDate(date);</b>
+<b class="fc">&nbsp;        dateValidator.validateDate(date);</b>
 &nbsp;
-<b class="nc">&nbsp;        if (!ruleId.matches(&quot;^[\\w\\W]{1,10}$&quot;)) {</b>
+<b class="pc">&nbsp;        if (!ruleId.matches(&quot;^[\\w\\W]{1,10}$&quot;)) {</b>
 <b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid Rule ID. It should be up to 10 characters.&quot;);</b>
 &nbsp;        }
 &nbsp;
 &nbsp;        BigDecimal rate;
 &nbsp;        try {
-<b class="nc">&nbsp;            rate = new BigDecimal(rateStr);</b>
+<b class="fc">&nbsp;            rate = new BigDecimal(rateStr);</b>
 &nbsp;        } catch (NumberFormatException e) {
 <b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid Rate. Please enter a valid numeric value.&quot;);</b>
 &nbsp;        }
 &nbsp;
-<b class="nc">&nbsp;        if (rate.compareTo(BigDecimal.ZERO) &lt;= 0 || rate.compareTo(new BigDecimal(&quot;100&quot;)) &gt;= 0) {</b>
-<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Interest rate must be between 0 and 100.&quot;);</b>
+<b class="fc">&nbsp;        if (rate.compareTo(BigDecimal.ZERO) &lt;= 0 || rate.compareTo(new BigDecimal(&quot;100&quot;)) &gt;= 0) {</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;Interest rate must be between 0 and 100.&quot;);</b>
 &nbsp;        }
 &nbsp;
 &nbsp;        // Delete any existing rules for the same date
-<b class="nc">&nbsp;        interestRuleRepository.deleteRulesByDate(date);</b>
+<b class="fc">&nbsp;        interestRuleRepository.deleteRulesByDate(date);</b>
 &nbsp;
 &nbsp;        // Add the new rule
-<b class="nc">&nbsp;        InterestRule newRule = new InterestRule(date, ruleId, rate);</b>
-<b class="nc">&nbsp;        interestRuleRepository.saveInterestRule(newRule);</b>
+<b class="fc">&nbsp;        InterestRule newRule = new InterestRule(date, ruleId, rate);</b>
+<b class="fc">&nbsp;        interestRuleRepository.saveInterestRule(newRule);</b>
 &nbsp;
 &nbsp;        // Display all rules
-<b class="nc">&nbsp;        List&lt;InterestRule&gt; allRules = interestRuleRepository.getAllRules();</b>
-<b class="nc">&nbsp;        allRules.sort(Comparator.comparing(InterestRule::getDate));</b>
+<b class="fc">&nbsp;        List&lt;InterestRule&gt; allRules = interestRuleRepository.getAllRules();</b>
+<b class="fc">&nbsp;        allRules.sort(Comparator.comparing(InterestRule::getDate));</b>
 &nbsp;
-<b class="nc">&nbsp;        System.out.println(&quot;Interest rules:&quot;);</b>
-<b class="nc">&nbsp;        System.out.println(&quot;| Date     | RuleId | Rate (%) |&quot;);</b>
-<b class="nc">&nbsp;        for (InterestRule rule : allRules) {</b>
-<b class="nc">&nbsp;            System.out.println(rule);</b>
+<b class="fc">&nbsp;        System.out.println(&quot;Interest rules:&quot;);</b>
+<b class="fc">&nbsp;        System.out.println(&quot;| Date     | RuleId | Rate (%) |&quot;);</b>
+<b class="fc">&nbsp;        for (InterestRule rule : allRules) {</b>
+<b class="fc">&nbsp;            System.out.println(rule);</b>
 &nbsp;        }
 &nbsp;    }
 &nbsp;
 &nbsp;    @Override
 &nbsp;    public void printStatement(String input) {
-<b class="nc">&nbsp;        String[] parts = input.split(&quot; &quot;);</b>
-<b class="nc">&nbsp;        if (parts.length != 2) {</b>
+<b class="fc">&nbsp;        String[] parts = input.split(&quot; &quot;);</b>
+<b class="pc">&nbsp;        if (parts.length != 2) {</b>
 <b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid statement format. Use &lt;Account&gt; &lt;Year&gt;&lt;Month&gt;&quot;);</b>
 &nbsp;        }
 &nbsp;
-<b class="nc">&nbsp;        String accountId = parts[0];</b>
-<b class="nc">&nbsp;        String yearMonth = parts[1];</b>
+<b class="fc">&nbsp;        String accountId = parts[0];</b>
+<b class="fc">&nbsp;        String yearMonth = parts[1];</b>
 &nbsp;
-<b class="nc">&nbsp;        accountService.printStatement(accountId, yearMonth);</b>
+<b class="fc">&nbsp;        accountService.printStatement(accountId, yearMonth);</b>
 &nbsp;    }
 &nbsp;}
 </code>
@@ -215,7 +217,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2025-03-08 18:49</div>
+    <div style="float:right;">generated on 2025-03-09 22:28</div>
 </div>
 </body>
 </html>

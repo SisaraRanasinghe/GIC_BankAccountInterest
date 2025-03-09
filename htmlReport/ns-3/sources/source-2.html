@@ -5,7 +5,7 @@
 <html id="htmlId">
 <head>
   <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
-  <title>Coverage Report > InMemoryInterestRuleRepository</title>
+  <title>Coverage Report > InterestRuleRepositoryImpl</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/idea.min.css";
@@ -22,7 +22,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     <a href="../index.html">sg.com.gic.bankaccountinterest.repository.repositoryimpl</a>
 </div>
 
-<h1>Coverage Summary for Class: InMemoryInterestRuleRepository (sg.com.gic.bankaccountinterest.repository.repositoryimpl)</h1>
+<h1>Coverage Summary for Class: InterestRuleRepositoryImpl (sg.com.gic.bankaccountinterest.repository.repositoryimpl)</h1>
 
 <table class="coverageStats">
 <tr>
@@ -45,37 +45,37 @@ Current scope:     <a href="../../index.html">all classes</a>
 </th>
 </tr>
 <tr>
-  <td class="name">InMemoryInterestRuleRepository</td>
+  <td class="name">InterestRuleRepositoryImpl</td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/1)
+    (1/1)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    83.3%
   </span>
   <span class="absValue">
-    (0/6)
+    (5/6)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/2)
+    (2/2)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    90.9%
   </span>
   <span class="absValue">
-    (0/11)
+    (10/11)
   </span>
 </td>
 </tr>
@@ -89,7 +89,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 <pre>
 <code class="sourceCode" id="sourceCode">&nbsp;package sg.com.gic.bankaccountinterest.repository.repositoryimpl;
 &nbsp;
-&nbsp;import sg.com.gic.bankaccountinterest.model.InterestRuleTest;
+&nbsp;import sg.com.gic.bankaccountinterest.model.InterestRule;
 &nbsp;import sg.com.gic.bankaccountinterest.repository.InterestRuleRepository;
 &nbsp;
 &nbsp;import java.time.LocalDate;
@@ -98,30 +98,28 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;import java.util.Comparator;
 &nbsp;import java.util.List;
 &nbsp;import java.util.Optional;
-&nbsp;import java.util.stream.Collectors;
 &nbsp;
-<b class="nc">&nbsp;public class InMemoryInterestRuleRepository implements InterestRuleRepository {</b>
-<b class="nc">&nbsp;    private final List&lt;InterestRule&gt; interestRules = new ArrayList&lt;&gt;();</b>
-<b class="nc">&nbsp;    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern(&quot;yyyyMMdd&quot;);</b>
+<b class="fc">&nbsp;public class InterestRuleRepositoryImpl implements InterestRuleRepository {</b>
+<b class="fc">&nbsp;    private final List&lt;InterestRule&gt; interestRules = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern(&quot;yyyyMMdd&quot;);</b>
 &nbsp;
 &nbsp;    @Override
 &nbsp;    public void saveInterestRule(InterestRule interestRule) {
-<b class="nc">&nbsp;        interestRules.add(interestRule);</b>
-&nbsp;        // Sort rules by date for efficient retrieval
-<b class="nc">&nbsp;        interestRules.sort(Comparator.comparing(InterestRule::getDate));</b>
+<b class="fc">&nbsp;        interestRules.add(interestRule);</b>
+<b class="fc">&nbsp;        interestRules.sort(Comparator.comparing(InterestRule::getDate));</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    @Override
 &nbsp;    public List&lt;InterestRule&gt; getAllRules() {
-<b class="nc">&nbsp;        return new ArrayList&lt;&gt;(interestRules);</b>
+<b class="fc">&nbsp;        return new ArrayList&lt;&gt;(interestRules);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    @Override
 &nbsp;    public Optional&lt;InterestRule&gt; getApplicableRuleForDate(LocalDate date) {
-<b class="nc">&nbsp;        String dateStr = date.format(DATE_FORMAT);</b>
-<b class="nc">&nbsp;        return interestRules.stream()</b>
-<b class="nc">&nbsp;                .filter(rule -&gt; rule.getDate().compareTo(dateStr) &lt;= 0)</b>
-<b class="nc">&nbsp;                .max(Comparator.comparing(InterestRule::getDate));</b>
+<b class="fc">&nbsp;        String dateStr = date.format(DATE_FORMAT);</b>
+<b class="fc">&nbsp;        return interestRules.stream()</b>
+<b class="fc">&nbsp;                .filter(rule -&gt; rule.getDate().compareTo(dateStr) &lt;= 0)</b>
+<b class="fc">&nbsp;                .max(Comparator.comparing(InterestRule::getDate));</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    @Override
@@ -152,7 +150,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2025-03-08 18:49</div>
+    <div style="float:right;">generated on 2025-03-09 22:28</div>
 </div>
 </body>
 </html>

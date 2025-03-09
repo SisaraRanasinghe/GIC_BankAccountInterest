@@ -5,7 +5,7 @@
 <html id="htmlId">
 <head>
   <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
-  <title>Coverage Report > DefaultAccountService</title>
+  <title>Coverage Report > AccountServiceImpl</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/idea.min.css";
@@ -22,7 +22,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     <a href="../index.html">sg.com.gic.bankaccountinterest.service.serviceimpl</a>
 </div>
 
-<h1>Coverage Summary for Class: DefaultAccountService (sg.com.gic.bankaccountinterest.service.serviceimpl)</h1>
+<h1>Coverage Summary for Class: AccountServiceImpl (sg.com.gic.bankaccountinterest.service.serviceimpl)</h1>
 
 <table class="coverageStats">
 <tr>
@@ -45,37 +45,37 @@ Current scope:     <a href="../../index.html">all classes</a>
 </th>
 </tr>
 <tr>
-  <td class="name">DefaultAccountService</td>
+  <td class="name">AccountServiceImpl</td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/1)
+    (1/1)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/4)
+    (4/4)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    85.7%
   </span>
   <span class="absValue">
-    (0/14)
+    (12/14)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/41)
+    (41/41)
   </span>
 </td>
 </tr>
@@ -88,6 +88,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <pre>
 <code class="sourceCode" id="sourceCode">&nbsp;package sg.com.gic.bankaccountinterest.service.serviceimpl;
+&nbsp;
 &nbsp;import sg.com.gic.bankaccountinterest.model.Account;
 &nbsp;import sg.com.gic.bankaccountinterest.model.Transaction;
 &nbsp;import sg.com.gic.bankaccountinterest.model.TransactionType;
@@ -103,90 +104,91 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;import java.util.Comparator;
 &nbsp;import java.util.List;
 &nbsp;import java.util.Optional;
-&nbsp;public class DefaultAccountService implements AccountService {
+&nbsp;
+&nbsp;public class AccountServiceImpl implements AccountService {
 &nbsp;    private final AccountRepository accountRepository;
 &nbsp;    private final InterestCalculator interestCalculator;
 &nbsp;    private final DateValidator dateValidator;
-<b class="nc">&nbsp;    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern(&quot;yyyyMMdd&quot;);</b>
+<b class="fc">&nbsp;    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern(&quot;yyyyMMdd&quot;);</b>
 &nbsp;
-&nbsp;    public DefaultAccountService(AccountRepository accountRepository,
-&nbsp;                                 InterestCalculator interestCalculator,
-<b class="nc">&nbsp;                                 DateValidator dateValidator) {</b>
-<b class="nc">&nbsp;        this.accountRepository = accountRepository;</b>
-<b class="nc">&nbsp;        this.interestCalculator = interestCalculator;</b>
-<b class="nc">&nbsp;        this.dateValidator = dateValidator;</b>
+&nbsp;    public AccountServiceImpl(AccountRepository accountRepository,
+&nbsp;                              InterestCalculator interestCalculator,
+<b class="fc">&nbsp;                              DateValidator dateValidator) {</b>
+<b class="fc">&nbsp;        this.accountRepository = accountRepository;</b>
+<b class="fc">&nbsp;        this.interestCalculator = interestCalculator;</b>
+<b class="fc">&nbsp;        this.dateValidator = dateValidator;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    @Override
 &nbsp;    public void printStatement(String accountId, String yearMonth) {
 &nbsp;        // Validate yearMonth format
-<b class="nc">&nbsp;        if (!yearMonth.matches(&quot;^\\d{6}$&quot;)) {</b>
-<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid date format. Date should be in YYYYMM format.&quot;);</b>
+<b class="fc">&nbsp;        if (!yearMonth.matches(&quot;^\\d{6}$&quot;)) {</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid date format. Date should be in YYYYMM format.&quot;);</b>
 &nbsp;        }
 &nbsp;
-<b class="nc">&nbsp;        String year = yearMonth.substring(0, 4);</b>
-<b class="nc">&nbsp;        String month = yearMonth.substring(4, 6);</b>
-<b class="nc">&nbsp;        String fullDate = year + month + &quot;01&quot;;</b>
+<b class="fc">&nbsp;        String year = yearMonth.substring(0, 4);</b>
+<b class="fc">&nbsp;        String month = yearMonth.substring(4, 6);</b>
+<b class="fc">&nbsp;        String fullDate = year + month + &quot;01&quot;;</b>
 &nbsp;
-<b class="nc">&nbsp;        dateValidator.validateDate(fullDate);</b>
+<b class="fc">&nbsp;        dateValidator.validateDate(fullDate);</b>
 &nbsp;
-<b class="nc">&nbsp;        int yearInt = Integer.parseInt(year);</b>
-<b class="nc">&nbsp;        int monthInt = Integer.parseInt(month);</b>
-<b class="nc">&nbsp;        YearMonth yearMonthObj = YearMonth.of(yearInt, monthInt);</b>
+<b class="fc">&nbsp;        int yearInt = Integer.parseInt(year);</b>
+<b class="fc">&nbsp;        int monthInt = Integer.parseInt(month);</b>
+<b class="fc">&nbsp;        YearMonth yearMonthObj = YearMonth.of(yearInt, monthInt);</b>
 &nbsp;
-<b class="nc">&nbsp;        LocalDate startDate = yearMonthObj.atDay(1);</b>
-<b class="nc">&nbsp;        LocalDate endDate = yearMonthObj.atEndOfMonth();</b>
+<b class="fc">&nbsp;        LocalDate startDate = yearMonthObj.atDay(1);</b>
+<b class="fc">&nbsp;        LocalDate endDate = yearMonthObj.atEndOfMonth();</b>
 &nbsp;
-<b class="nc">&nbsp;        String startDateStr = startDate.format(DATE_FORMAT);</b>
-<b class="nc">&nbsp;        String endDateStr = endDate.format(DATE_FORMAT);</b>
+<b class="fc">&nbsp;        String startDateStr = startDate.format(DATE_FORMAT);</b>
+<b class="fc">&nbsp;        String endDateStr = endDate.format(DATE_FORMAT);</b>
 &nbsp;
-<b class="nc">&nbsp;        Optional&lt;Account&gt; accountOptional = accountRepository.findByAccountId(accountId);</b>
-<b class="nc">&nbsp;        if (!accountOptional.isPresent()) {</b>
-<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Account does not exist. Unable to generate print statement.&quot;);</b>
+<b class="fc">&nbsp;        Optional&lt;Account&gt; accountOptional = accountRepository.findByAccountId(accountId);</b>
+<b class="fc">&nbsp;        if (!accountOptional.isPresent()) {</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;Account does not exist. Unable to generate print statement.&quot;);</b>
 &nbsp;        }
 &nbsp;
-<b class="nc">&nbsp;        List&lt;Transaction&gt; transactions = accountRepository.getTransactionsInPeriod(accountId, startDateStr, endDateStr);</b>
-<b class="nc">&nbsp;        if (transactions.isEmpty()) {</b>
-<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;No transactions found for the given date. Unable to generate print statement.&quot;);</b>
+<b class="fc">&nbsp;        List&lt;Transaction&gt; transactions = accountRepository.getTransactionsInPeriod(accountId, startDateStr, endDateStr);</b>
+<b class="fc">&nbsp;        if (transactions.isEmpty()) {</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;No transactions found for the given date. Unable to generate print statement.&quot;);</b>
 &nbsp;        }
 &nbsp;
-<b class="nc">&nbsp;        transactions.sort(Comparator.comparing(Transaction::getDate));</b>
+<b class="fc">&nbsp;        transactions.sort(Comparator.comparing(Transaction::getDate));</b>
 &nbsp;
-<b class="nc">&nbsp;        BigDecimal openingBalance = accountRepository.calculateBalanceBeforeDate(accountId, startDateStr);</b>
-<b class="nc">&nbsp;        BigDecimal runningBalance = openingBalance;</b>
+<b class="fc">&nbsp;        BigDecimal openingBalance = accountRepository.calculateBalanceBeforeDate(accountId, startDateStr);</b>
+<b class="fc">&nbsp;        BigDecimal runningBalance = openingBalance;</b>
 &nbsp;
-<b class="nc">&nbsp;        System.out.println(&quot;Account: &quot; + accountId);</b>
-<b class="nc">&nbsp;        System.out.println(&quot;| Date     | Txn Id      | Type | Amount   | Balance  |&quot;);</b>
+<b class="fc">&nbsp;        System.out.println(&quot;Account: &quot; + accountId);</b>
+<b class="fc">&nbsp;        System.out.println(&quot;| Date     | Txn Id      | Type | Amount   | Balance  |&quot;);</b>
 &nbsp;
-<b class="nc">&nbsp;        for (Transaction t : transactions) {</b>
-<b class="nc">&nbsp;            if (t.getType() == TransactionType.DEPOSIT || t.getType() == TransactionType.INTEREST) {</b>
-<b class="nc">&nbsp;                runningBalance = runningBalance.add(t.getAmount());</b>
-<b class="nc">&nbsp;            } else if (t.getType() == TransactionType.WITHDRAWAL) {</b>
-<b class="nc">&nbsp;                runningBalance = runningBalance.subtract(t.getAmount());</b>
+<b class="fc">&nbsp;        for (Transaction t : transactions) {</b>
+<b class="pc">&nbsp;            if (t.getType() == TransactionType.DEPOSIT || t.getType() == TransactionType.INTEREST) {</b>
+<b class="fc">&nbsp;                runningBalance = runningBalance.add(t.getAmount());</b>
+<b class="pc">&nbsp;            } else if (t.getType() == TransactionType.WITHDRAWAL) {</b>
+<b class="fc">&nbsp;                runningBalance = runningBalance.subtract(t.getAmount());</b>
 &nbsp;            }
 &nbsp;
-<b class="nc">&nbsp;            System.out.printf(&quot;| %-8s | %-11s | %-4s | %8.2f | %8.2f |%n&quot;,</b>
-<b class="nc">&nbsp;                    t.getDate(), t.getId(), t.getType(), t.getAmount(), runningBalance);</b>
+<b class="fc">&nbsp;            System.out.printf(&quot;| %-8s | %-11s | %-4s | %8.2f | %8.2f |%n&quot;,</b>
+<b class="fc">&nbsp;                    t.getDate(), t.getId(), t.getType(), t.getAmount(), runningBalance);</b>
 &nbsp;        }
 &nbsp;
 &nbsp;        // Calculate and print interest
-<b class="nc">&nbsp;        BigDecimal interest = interestCalculator.calculateMonthlyInterest(accountId, startDate, endDate);</b>
-<b class="nc">&nbsp;        runningBalance = runningBalance.add(interest);</b>
+<b class="fc">&nbsp;        BigDecimal interest = interestCalculator.calculateMonthlyInterest(accountId, startDate, endDate);</b>
+<b class="fc">&nbsp;        runningBalance = runningBalance.add(interest);</b>
 &nbsp;
 &nbsp;        // Add interest as a transaction
-<b class="nc">&nbsp;        Transaction interestTransaction = new Transaction(</b>
+<b class="fc">&nbsp;        Transaction interestTransaction = new Transaction(</b>
 &nbsp;                endDateStr,
 &nbsp;                &quot;&quot;,
 &nbsp;                TransactionType.INTEREST,
 &nbsp;                interest);
 &nbsp;
-<b class="nc">&nbsp;        System.out.printf(&quot;| %-8s | %-11s | %-4s | %8.2f | %8.2f |%n&quot;,</b>
+<b class="fc">&nbsp;        System.out.printf(&quot;| %-8s | %-11s | %-4s | %8.2f | %8.2f |%n&quot;,</b>
 &nbsp;                endDateStr, &quot;&quot;, TransactionType.INTEREST, interest, runningBalance);
 &nbsp;    }
 &nbsp;
 &nbsp;    @Override
 &nbsp;    public boolean accountExists(String accountId) {
-<b class="nc">&nbsp;        return accountRepository.findByAccountId(accountId).isPresent();</b>
+<b class="fc">&nbsp;        return accountRepository.findByAccountId(accountId).isPresent();</b>
 &nbsp;    }
 &nbsp;}
 </code>
@@ -212,7 +214,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2025-03-08 18:49</div>
+    <div style="float:right;">generated on 2025-03-09 22:28</div>
 </div>
 </body>
 </html>

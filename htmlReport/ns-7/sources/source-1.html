@@ -5,7 +5,7 @@
 <html id="htmlId">
 <head>
   <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
-  <title>Coverage Report > BankService</title>
+  <title>Coverage Report > InterestCalculator</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/idea.min.css";
@@ -22,7 +22,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     <a href="../index.html">sg.com.gic.bankaccountinterest.service</a>
 </div>
 
-<h1>Coverage Summary for Class: BankService (sg.com.gic.bankaccountinterest.service)</h1>
+<h1>Coverage Summary for Class: InterestCalculator (sg.com.gic.bankaccountinterest.service)</h1>
 
 <table class="coverageStats">
 
@@ -30,13 +30,13 @@ Current scope:     <a href="../../index.html">all classes</a>
   <th class="name">Class</th>
 </tr>
   <tr>
-    <td class="name">BankService$MockitoMock$bFPUB7o6</td>
+    <td class="name">InterestCalculator$MockitoMock$2ox1KpbA</td>
   </tr>
   <tr>
-    <td class="name">BankService$MockitoMock$bFPUB7o6$auxiliary$12dzMFl0</td>
+    <td class="name">InterestCalculator$MockitoMock$2ox1KpbA$auxiliary$PhV9bcS0</td>
   </tr>
   <tr>
-    <td class="name">BankService$MockitoMock$bFPUB7o6$auxiliary$EaQ8SA7z</td>
+    <td class="name">InterestCalculator$MockitoMock$2ox1KpbA$auxiliary$WIllcxVR</td>
   </tr>
 <tr>
   <td class="name"><strong>Total</strong></td>
@@ -50,11 +50,11 @@ Current scope:     <a href="../../index.html">all classes</a>
 <pre>
 <code class="sourceCode" id="sourceCode">&nbsp;package sg.com.gic.bankaccountinterest.service;
 &nbsp;
-&nbsp;public interface BankService {
-&nbsp;    void processTransaction(String input);
-&nbsp;    void addInterestRule(String input);
-&nbsp;    void printStatement(String input);
+&nbsp;import java.math.BigDecimal;
+&nbsp;import java.time.LocalDate;
 &nbsp;
+&nbsp;public interface InterestCalculator {
+&nbsp;    BigDecimal calculateMonthlyInterest(String accountId, LocalDate startDate, LocalDate endDate);
 &nbsp;}
 </code>
 </pre>
@@ -79,7 +79,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2025-03-08 18:49</div>
+    <div style="float:right;">generated on 2025-03-09 22:28</div>
 </div>
 </body>
 </html>

@@ -5,7 +5,7 @@
 <html id="htmlId">
 <head>
   <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
-  <title>Coverage Report > AccountService</title>
+  <title>Coverage Report > BankService</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/idea.min.css";
@@ -22,14 +22,14 @@ Current scope:     <a href="../../index.html">all classes</a>
     <a href="../index.html">sg.com.gic.bankaccountinterest.service</a>
 </div>
 
-<h1>Coverage Summary for Class: AccountService (sg.com.gic.bankaccountinterest.service)</h1>
+<h1>Coverage Summary for Class: BankService (sg.com.gic.bankaccountinterest.service)</h1>
 
 <table class="coverageStats">
 <tr>
   <th class="name">Class</th>
 </tr>
 <tr>
-  <td class="name">AccountService</td>
+  <td class="name">BankService</td>
 </tr>
 
 </table>
@@ -41,9 +41,12 @@ Current scope:     <a href="../../index.html">all classes</a>
 <pre>
 <code class="sourceCode" id="sourceCode">&nbsp;package sg.com.gic.bankaccountinterest.service;
 &nbsp;
-&nbsp;public interface AccountService {
-&nbsp;    void printStatement(String account, String yearMonth);
-&nbsp;    boolean accountExists(String accountId);
+&nbsp;public interface BankService {
+&nbsp;    void processTransaction(String input);
+&nbsp;
+&nbsp;    void addInterestRule(String input);
+&nbsp;
+&nbsp;    void printStatement(String input);
 &nbsp;
 &nbsp;}
 </code>
@@ -69,7 +72,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2025-03-08 18:49</div>
+    <div style="float:right;">generated on 2025-03-09 22:28</div>
 </div>
 </body>
 </html>

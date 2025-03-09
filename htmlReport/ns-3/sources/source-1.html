@@ -5,7 +5,7 @@
 <html id="htmlId">
 <head>
   <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
-  <title>Coverage Report > InMemoryAccountRepository</title>
+  <title>Coverage Report > AccountRepositoryImpl</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/idea.min.css";
@@ -22,7 +22,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     <a href="../index.html">sg.com.gic.bankaccountinterest.repository.repositoryimpl</a>
 </div>
 
-<h1>Coverage Summary for Class: InMemoryAccountRepository (sg.com.gic.bankaccountinterest.repository.repositoryimpl)</h1>
+<h1>Coverage Summary for Class: AccountRepositoryImpl (sg.com.gic.bankaccountinterest.repository.repositoryimpl)</h1>
 
 <table class="coverageStats">
 <tr>
@@ -45,37 +45,37 @@ Current scope:     <a href="../../index.html">all classes</a>
 </th>
 </tr>
 <tr>
-  <td class="name">InMemoryAccountRepository</td>
+  <td class="name">AccountRepositoryImpl</td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/1)
+    (1/1)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/9)
+    (9/9)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    84.6%
   </span>
   <span class="absValue">
-    (0/26)
+    (22/26)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    91.7%
   </span>
   <span class="absValue">
-    (0/36)
+    (33/36)
   </span>
 </td>
 </tr>
@@ -88,6 +88,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <pre>
 <code class="sourceCode" id="sourceCode">&nbsp;package sg.com.gic.bankaccountinterest.repository.repositoryimpl;
+&nbsp;
 &nbsp;import sg.com.gic.bankaccountinterest.model.Account;
 &nbsp;import sg.com.gic.bankaccountinterest.model.Transaction;
 &nbsp;import sg.com.gic.bankaccountinterest.model.TransactionType;
@@ -100,75 +101,76 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;import java.util.Map;
 &nbsp;import java.util.Optional;
 &nbsp;import java.util.stream.Collectors;
-<b class="nc">&nbsp;public class InMemoryAccountRepository implements AccountRepository {</b>
-<b class="nc">&nbsp;    private final Map&lt;String, Account&gt; accounts = new HashMap&lt;&gt;();</b>
+&nbsp;
+<b class="fc">&nbsp;public class AccountRepositoryImpl implements AccountRepository {</b>
+<b class="fc">&nbsp;    private final Map&lt;String, Account&gt; accounts = new HashMap&lt;&gt;();</b>
 &nbsp;
 &nbsp;    @Override
 &nbsp;    public Optional&lt;Account&gt; findByAccountId(String accountId) {
-<b class="nc">&nbsp;        return Optional.ofNullable(accounts.get(accountId));</b>
+<b class="fc">&nbsp;        return Optional.ofNullable(accounts.get(accountId));</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    @Override
 &nbsp;    public void saveAccount(Account account) {
-<b class="nc">&nbsp;        accounts.put(account.getAccountId(), account);</b>
+<b class="fc">&nbsp;        accounts.put(account.getAccountId(), account);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    @Override
 &nbsp;    public void addTransaction(String accountId, Transaction transaction) {
-<b class="nc">&nbsp;        accounts.computeIfAbsent(accountId, Account::new)</b>
-<b class="nc">&nbsp;                .addTransaction(transaction);</b>
+<b class="fc">&nbsp;        accounts.computeIfAbsent(accountId, Account::new)</b>
+<b class="fc">&nbsp;                .addTransaction(transaction);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    @Override
 &nbsp;    public BigDecimal calculateBalanceAtDate(String accountId, String date) {
-<b class="nc">&nbsp;        Account account = accounts.get(accountId);</b>
-<b class="nc">&nbsp;        if (account == null) {</b>
-<b class="nc">&nbsp;            return BigDecimal.ZERO;</b>
+<b class="fc">&nbsp;        Account account = accounts.get(accountId);</b>
+<b class="fc">&nbsp;        if (account == null) {</b>
+<b class="fc">&nbsp;            return BigDecimal.ZERO;</b>
 &nbsp;        }
 &nbsp;
-<b class="nc">&nbsp;        return account.getTransactions().stream()</b>
-<b class="nc">&nbsp;                .filter(t -&gt; t.getDate().compareTo(date) &lt;= 0)</b>
-<b class="nc">&nbsp;                .map(t -&gt; {</b>
-<b class="nc">&nbsp;                    if (t.getType() == TransactionType.DEPOSIT || t.getType() == TransactionType.INTEREST) {</b>
-<b class="nc">&nbsp;                        return t.getAmount();</b>
-<b class="nc">&nbsp;                    } else if (t.getType() == TransactionType.WITHDRAWAL) {</b>
-<b class="nc">&nbsp;                        return t.getAmount().negate();</b>
+<b class="fc">&nbsp;        return account.getTransactions().stream()</b>
+<b class="fc">&nbsp;                .filter(t -&gt; t.getDate().compareTo(date) &lt;= 0)</b>
+<b class="fc">&nbsp;                .map(t -&gt; {</b>
+<b class="fc">&nbsp;                    if (t.getType() == TransactionType.DEPOSIT || t.getType() == TransactionType.INTEREST) {</b>
+<b class="fc">&nbsp;                        return t.getAmount();</b>
+<b class="pc">&nbsp;                    } else if (t.getType() == TransactionType.WITHDRAWAL) {</b>
+<b class="fc">&nbsp;                        return t.getAmount().negate();</b>
 &nbsp;                    }
 <b class="nc">&nbsp;                    return BigDecimal.ZERO;</b>
 &nbsp;                })
-<b class="nc">&nbsp;                .reduce(BigDecimal.ZERO, BigDecimal::add);</b>
+<b class="fc">&nbsp;                .reduce(BigDecimal.ZERO, BigDecimal::add);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    @Override
 &nbsp;    public BigDecimal calculateBalanceBeforeDate(String accountId, String date) {
-<b class="nc">&nbsp;        Account account = accounts.get(accountId);</b>
-<b class="nc">&nbsp;        if (account == null) {</b>
-<b class="nc">&nbsp;            return BigDecimal.ZERO;</b>
+<b class="fc">&nbsp;        Account account = accounts.get(accountId);</b>
+<b class="fc">&nbsp;        if (account == null) {</b>
+<b class="fc">&nbsp;            return BigDecimal.ZERO;</b>
 &nbsp;        }
 &nbsp;
-<b class="nc">&nbsp;        return account.getTransactions().stream()</b>
-<b class="nc">&nbsp;                .filter(t -&gt; t.getDate().compareTo(date) &lt; 0)</b>
-<b class="nc">&nbsp;                .map(t -&gt; {</b>
-<b class="nc">&nbsp;                    if (t.getType() == TransactionType.DEPOSIT || t.getType() == TransactionType.INTEREST) {</b>
-<b class="nc">&nbsp;                        return t.getAmount();</b>
-<b class="nc">&nbsp;                    } else if (t.getType() == TransactionType.WITHDRAWAL) {</b>
-<b class="nc">&nbsp;                        return t.getAmount().negate();</b>
+<b class="fc">&nbsp;        return account.getTransactions().stream()</b>
+<b class="fc">&nbsp;                .filter(t -&gt; t.getDate().compareTo(date) &lt; 0)</b>
+<b class="fc">&nbsp;                .map(t -&gt; {</b>
+<b class="pc">&nbsp;                    if (t.getType() == TransactionType.DEPOSIT || t.getType() == TransactionType.INTEREST) {</b>
+<b class="fc">&nbsp;                        return t.getAmount();</b>
+<b class="pc">&nbsp;                    } else if (t.getType() == TransactionType.WITHDRAWAL) {</b>
+<b class="fc">&nbsp;                        return t.getAmount().negate();</b>
 &nbsp;                    }
 <b class="nc">&nbsp;                    return BigDecimal.ZERO;</b>
 &nbsp;                })
-<b class="nc">&nbsp;                .reduce(BigDecimal.ZERO, BigDecimal::add);</b>
+<b class="fc">&nbsp;                .reduce(BigDecimal.ZERO, BigDecimal::add);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    @Override
 &nbsp;    public List&lt;Transaction&gt; getTransactionsInPeriod(String accountId, String startDate, String endDate) {
-<b class="nc">&nbsp;        Account account = accounts.get(accountId);</b>
-<b class="nc">&nbsp;        if (account == null) {</b>
+<b class="fc">&nbsp;        Account account = accounts.get(accountId);</b>
+<b class="pc">&nbsp;        if (account == null) {</b>
 <b class="nc">&nbsp;            return new ArrayList&lt;&gt;();</b>
 &nbsp;        }
 &nbsp;
-<b class="nc">&nbsp;        return account.getTransactions().stream()</b>
-<b class="nc">&nbsp;                .filter(t -&gt; t.getDate().compareTo(startDate) &gt;= 0 &amp;&amp; t.getDate().compareTo(endDate) &lt;= 0)</b>
-<b class="nc">&nbsp;                .collect(Collectors.toList());</b>
+<b class="fc">&nbsp;        return account.getTransactions().stream()</b>
+<b class="fc">&nbsp;                .filter(t -&gt; t.getDate().compareTo(startDate) &gt;= 0 &amp;&amp; t.getDate().compareTo(endDate) &lt;= 0)</b>
+<b class="fc">&nbsp;                .collect(Collectors.toList());</b>
 &nbsp;    }
 &nbsp;}
 </code>
@@ -194,7 +196,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2025-03-08 18:49</div>
+    <div style="float:right;">generated on 2025-03-09 22:28</div>
 </div>
 </body>
 </html>
